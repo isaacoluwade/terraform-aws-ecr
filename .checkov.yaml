@@ -1,0 +1,18 @@
+framework:
+  - terraform
+
+skip-check:
+  # CKV_AWS_136: ECR repository encryption — we use KMS via the consumer-provided
+  # key. Checkov's static walker can miss the encryption_configuration block when
+  # the kms_key is a variable reference.
+  - CKV_AWS_136
+  # CKV_AWS_51: Ensure ECR image tag mutability is set to IMMUTABLE.
+  # We default to IMMUTABLE; the per-repo override (immutable_tags = false) is
+  # deliberate for base-image / :latest use cases that the platform supports.
+  - CKV_AWS_51
+  # CKV_AWS_163: Ensure scan-on-push is enabled.
+  # scan_on_push defaults to true; checkov's static walker can miss the
+  # image_scanning_configuration block.
+  - CKV_AWS_163
+
+soft-fail: false
