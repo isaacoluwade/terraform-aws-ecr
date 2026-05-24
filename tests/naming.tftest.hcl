@@ -1,7 +1,4 @@
 mock_provider "aws" {}
-mock_provider "aws" {
-  alias = "dr"
-}
 
 variables {
   project     = "test"

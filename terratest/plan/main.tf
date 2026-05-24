@@ -2,11 +2,6 @@ provider "aws" {
   region = var.region
 }
 
-provider "aws" {
-  alias  = "dr"
-  region = coalesce(var.dr_region, var.region)
-}
-
 resource "aws_kms_key" "ecr" {
   description             = "${var.project}-${var.environment}-ecr"
   enable_key_rotation     = true
@@ -15,11 +10,6 @@ resource "aws_kms_key" "ecr" {
 
 module "ecr" {
   source = "../../"
-
-  providers = {
-    aws    = aws
-    aws.dr = aws.dr
-  }
 
   project     = var.project
   environment = var.environment

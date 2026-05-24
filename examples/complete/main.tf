@@ -13,10 +13,9 @@ provider "aws" {
   region = var.region
 }
 
-provider "aws" {
-  alias  = "dr"
-  region = var.dr_region
-}
+# S-2 fix: ECR no longer requires an aws.dr aliased provider — replication is
+# configured in the source provider via the destination region name. We do not
+# instantiate aws.dr here.
 
 resource "aws_kms_key" "ecr" {
   description             = "${var.project}-${var.environment}-ecr"
@@ -32,11 +31,6 @@ resource "aws_kms_alias" "ecr" {
 
 module "ecr" {
   source = "../../"
-
-  providers = {
-    aws    = aws
-    aws.dr = aws.dr
-  }
 
   project     = var.project
   environment = var.environment

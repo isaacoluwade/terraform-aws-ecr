@@ -13,13 +13,6 @@ provider "aws" {
   region = var.region
 }
 
-# Required by the module even when no replication is configured (configuration_aliases);
-# pointed at the primary region so the unused provider has a valid config.
-provider "aws" {
-  alias  = "dr"
-  region = var.region
-}
-
 # In a real composition this comes from terraform-aws-kms; we synthesize a key
 # here so the example can stand alone.
 resource "aws_kms_key" "ecr" {
@@ -35,11 +28,6 @@ resource "aws_kms_alias" "ecr" {
 
 module "ecr" {
   source = "../../"
-
-  providers = {
-    aws    = aws
-    aws.dr = aws.dr
-  }
 
   project     = var.project
   environment = var.environment

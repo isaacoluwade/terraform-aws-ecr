@@ -1,7 +1,4 @@
 mock_provider "aws" {}
-mock_provider "aws" {
-  alias = "dr"
-}
 
 run "rejects_project_too_short" {
   command = plan

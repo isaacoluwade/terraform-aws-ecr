@@ -38,6 +38,18 @@ variable "kms_key_arn" {
   }
 }
 
+variable "manage_registry_replication" {
+  type        = bool
+  description = "EC-C2 fix: must be true to allow this module instance to write the account/region-wide aws_ecr_replication_configuration. Only ONE module instance per account+region may set this true — the resource is a registry-wide singleton and a second writer silently overwrites the first. Per-repo replicate_to settings are rejected with a precondition error when this flag is false."
+  default     = false
+}
+
+variable "manage_registry_scanning" {
+  type        = bool
+  description = "EC-C2 fix: must be true to allow this module instance to write the account/region-wide aws_ecr_registry_scanning_configuration. Same singleton constraint as manage_registry_replication. Per-repo enhanced_scan opt-ins are rejected with a precondition error when this flag is false."
+  default     = false
+}
+
 variable "repositories" {
   type = map(object({
     name = optional(string)
